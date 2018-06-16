@@ -29,10 +29,10 @@ export default class Profile extends Component<Props> {
     userData: {
       first_name:'',
       last_name:'',
-      displayName: '',
+      display_name: '',
       profile_uri_480: '',
-      followerCount: 0,
-      postCount:0,
+      follower_count: 0,
+      post_count:0,
       wins: 0,
     },
   }
@@ -66,7 +66,7 @@ export default class Profile extends Component<Props> {
             source={{uri: this.state.userData.profile_uri_480}}
           />}
           <Text style={styles.name}>
-            {this.state.userData.displayName}
+            {this.state.userData.display_name}
           </Text>
           {/* <Text style={styles.bio}>
             {this.state.bio}
@@ -80,13 +80,13 @@ export default class Profile extends Component<Props> {
         <View style={styles.profileContainer}>
           <View style={styles.dataCell}>
             {/* <FAIcon name='picture-o' size={30} color='gray'/> */}
-            <Text style={styles.dataCellText}>{this.state.userData.postCount}</Text>
+            <Text style={styles.dataCellText}>{this.state.userData.post_count}</Text>
             <Text style={styles.dataCellText}>Posts</Text>
           </View>
           <Divider style={styles.verticalDivider}/>
           <View style={styles.dataCell}>
             {/* <MIcon name='people' size={30} color='gray'/> */}
-            <Text style={styles.dataCellText}>{this.state.userData.followerCount}</Text>
+            <Text style={styles.dataCellText}>{this.state.userData.follower_count}</Text>
             <Text style={styles.dataCellText}>Followers</Text>
           </View>
           <Divider style={styles.verticalDivider}/>

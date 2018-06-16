@@ -54,11 +54,11 @@ export default class Login extends Component {
           uid: user.user.uid,
           first_name: user.additionalUserInfo.profile.first_name,
           last_name: user.additionalUserInfo.profile.last_name,
-          displayName: user.user.displayName,
+          display_name: user.user.displayName,
           email: user.additionalUserInfo.profile.email,
           profile_uri: user.user.photoURL,
           profile_uri_480: profile_uri_480,
-          creationTime: timestamp, // unix time easier to handle/sort
+          creation_time: timestamp, // unix time easier to handle/sort
         }
         console.log('body', body);
         // Check if user exists first, reg is lenth of response
