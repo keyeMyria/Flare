@@ -93,7 +93,7 @@ export default class Header extends Component<Props> {
           <Icon name='menu' size={30} color='white'/>
         </TouchableOpacity>}
         <Text style={styles.title}>
-          {this.props.title}
+          {this.props.caps ? this.props.title.toUpperCase() : this.props.title}
         </Text>
         {this.props.rightIcon == 'blank' && <TouchableOpacity onPress={() => this.doNothing()}>
           <Icon name='menu' size={30} color='transparent'/>

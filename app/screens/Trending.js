@@ -6,6 +6,7 @@ import {
   View
 } from 'react-native';
 import { BGC, tintColor } from '../index/colors';
+import { SearchBar } from 'react-native-elements';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -16,9 +17,25 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class Trending extends Component<Props> {
+
+  state = {
+    text:'',
+  }
+
+  search(text) {
+    this.setState({text : text})
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <SearchBar
+          style={styles.input}
+          clearIcon={this.state.text ? {color: 'gold'} : {color: 'transparent'}}
+          onChangeText={(text) => this.search(text)}
+          value={this.state.text}
+          onClear={(text) => this.search(text)}
+          placeholder='Search for a prompt' />
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -36,8 +53,8 @@ export default class Trending extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     backgroundColor: `${BGC}`,
   },
   welcome: {
@@ -50,4 +67,5 @@ const styles = StyleSheet.create({
     color: '#cccccc',
     marginBottom: 5,
   },
+
 });

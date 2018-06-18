@@ -16,6 +16,7 @@ export async function fetchUser (uid) {
     return responseData
   })
   .catch((err) => {
+    console.log('Error fetching user');
     throw(err);
   })
 }
@@ -37,6 +38,7 @@ export async function createUser (body) {
     })
   })
   .catch((error) => {
+    console.log('Error creating user');
     throw(error)
   })
 }
@@ -61,6 +63,28 @@ export async function loginUser (body) {
     throw(error)
   })
 }
+
+// Get competition categories
+export async function getCompetitionCategories () {
+  return fetch("http://localhost:3000/competition_categories/", {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+  .then((response) => response.json())
+  .then((responseData) => {
+    console.log('fetch categories successful');
+    // Data is len of 0 is null, 1 if existing
+    return responseData
+  })
+  .catch((err) => {
+    console.log("Error getting categories");
+    throw(err);
+  })
+}
+
 
 
 export async function uploadPost (body) {

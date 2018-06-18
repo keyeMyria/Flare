@@ -43,3 +43,7 @@ CREATE TABLE Competitions(
   end_time VARCHAR(20) NOT NULL,
   FOREIGN KEY (post_id) REFERENCES Posts(post_id)
 );
+
+CREATE TABLE CompetitionCategories(
+  type VARCHAR(255)
+);

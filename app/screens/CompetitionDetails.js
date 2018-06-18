@@ -10,6 +10,8 @@ import { BGC, tintColor } from '../index/colors';
 import Header from '../components/Header';
 import { isSignedIn } from '../index/auth';
 import * as firebase from 'firebase';
+import {colors} from '../index/colors';
+import {Divider} from 'react-native-elements';
 
 type Props = {};
 export default class CompetitionDetails extends Component<Props> {
@@ -34,9 +36,11 @@ export default class CompetitionDetails extends Component<Props> {
 
     return (
       <View style={styles.container}>
-        <Header title={competition.name}
+        <Header title={competition.type}
           leftIcon='ios-arrow-back'
+          rightIcon='blank'
           navigation={this.props.navigation}
+          caps={true}
         />
         <View style={styles.body}>
           <TouchableOpacity style={styles.postContent} onPress={()=>this.postContentPressed()}>
@@ -44,7 +48,14 @@ export default class CompetitionDetails extends Component<Props> {
 
             </View>
           </TouchableOpacity>
-
+          <Divider style={styles.divider}/>
+          <View style={styles.middleTab}>
+            <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
+              H O T   F L A R I N G   C O N T E N T
+            </Text>
+            <View style={styles.middleTabIcon}>
+            </View>
+          </View>
           <View style={styles.detailsContainer}>
 
           </View>
@@ -72,7 +83,23 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flex:1,
     backgroundColor: 'black'
-  }
+  },
+  middleTab: {
+    height:50,
+    // backgroundColor:'red',
+    justifyContent:'space-between',
+    alignItems:'center',
+    paddingVertical:10
+  },
+  middleTabIcon:{
+    backgroundColor:colors.grayDark,
+    height:2,
+    width:60,
+    borderRadius:5
+  },
+  divider:{
+    backgroundColor:colors.gray,
+  },
 
 
 });

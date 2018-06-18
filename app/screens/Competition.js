@@ -9,19 +9,22 @@ import {
   FlatList,
   ScrollView
 } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+
 import * as firebase from 'firebase';
 import { BGC, tintColor } from '../index/colors';
 import resolveAssetSource from 'resolveAssetSource';
 import CompetitionBanner from './../../images/CompetitionBanner.jpg';
 import CompetitionItem from '../components/CompetitionItem';
+import {getCompetitionCategories} from '../index/server';
+import {colors} from '../index/colors';
+import {Divider} from 'react-native-elements';
 
 const window = Dimensions.get('window');
 type Props = {};
 export default class Competition extends Component<Props> {
 
   state = {
-    text:'',
+    categories: [],
     popCompList: [
       {name:'Memes', image:'red'},
       {name:'Fortnite', image:'blue'},
@@ -48,14 +51,15 @@ export default class Competition extends Component<Props> {
     ]
   }
 
-  componentDidMount(){
-    alert(firebase.auth().currentUser.uid)
+  componentWillMount(){
+    getCompetitionCategories()
+    .then(res => {
+      this.setState({categories:res}, () => console.log('categories',this.state.categories))
+    })
   }
 
 
-  search(text) {
-    this.setState({text : text})
-  }
+
 
 
   _onLayout(event) {
@@ -79,7 +83,7 @@ export default class Competition extends Component<Props> {
     _renderItem = ({item}) => (
       <CompetitionItem
         name={item.name}
-        image={item.image}
+        // image={item.image}
         // ratio={0.5} // To customize aspect ratio of picture
 
       />
@@ -99,23 +103,22 @@ export default class Competition extends Component<Props> {
           resizeMode='contain'
           source={CompetitionBanner}
         />
-        <SearchBar
-          clearIcon={this.state.text ? {color: 'gold'} : {color: 'transparent'}}
-          // showLoading
-          // platform="ios"
-          // cancelButtonTitle="Cancel"
-          // onCancel={alert("hey!")}
-          onChangeText={(text) => this.search(text)}
-          value={this.state.text}
-          onClear={(text) => this.search(text)}
-          placeholder='Search for a prompt' />
+        <Divider style={styles.divider}/>
+        <View style={styles.middleTab}>
+          <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
+            B R O W S E   B Y   C A T E G O R Y
+          </Text>
+          <View style={styles.middleTabIcon}>
+          </View>
+        </View>
+
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.competitionsContainer}>
-            {this.state.totalList.map((item) => (
+            {this.state.categories.map((item) => (
               <CompetitionItem
                 competition={item}
-                name={item.name}
-                image={item.image}
+                type={item.type}
+                // image={item.image}
                 navigation={this.props.navigation}
                 // ratio={0.5} // To customize aspect ratio of picture
 
@@ -155,17 +158,22 @@ const styles = StyleSheet.create({
     // backgroundColor:'black',
     flexDirection:'row',
     flexWrap:'wrap',
-    padding:2,
-
   },
-  item:{
-    borderColor:'red',
-    borderWidth:3,
+  middleTab: {
+    height:50,
+    // backgroundColor:'red',
+    justifyContent:'space-between',
+    alignItems:'center',
+    paddingVertical:10
   },
-  input:{
-    fontFamily:'Helvetica Neue',
-    fontSize:14,
-    fontWeight:"300",
-  }
+  middleTabIcon:{
+    backgroundColor:colors.grayDark,
+    height:2,
+    width:60,
+    borderRadius:5
+  },
+  divider:{
+    backgroundColor:colors.gray,
+  },
 
 });

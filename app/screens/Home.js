@@ -89,7 +89,7 @@ export default class Home extends Component<Props> {
           ListHeaderComponent= {<Header
             title='F L A R E'
             navigation={this.props.navigation}
-            leftIcon='ios-search'
+            leftIcon='blank'
             rightIcon='blank'
           />}
         />
