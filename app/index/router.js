@@ -9,6 +9,7 @@ import PostContent from '../screens/PostContent';
 import Leaderboard from '../screens/Leaderboard';
 import Competition from '../screens/Competition';
 import CompetitionDetails from '../screens/CompetitionDetails';
+import CreateCompetition from '../screens/CreateCompetition';
 import Activity from '../screens/Activity';
 import Trending from '../screens/Trending';
 import Profile from '../screens/Profile';
@@ -31,6 +32,18 @@ export const CompetitionStack = createStackNavigator({
   // confirmscreen
 }, {
   // mode:'modal',
+  headerMode:'none',
+})
+
+export const OuterCompetitionStack = createStackNavigator({
+  Competition: {
+    screen: CompetitionStack,
+  },
+  CreateCompetition: {
+    screen: CreateCompetition,
+  }
+}, {
+  mode:'modal',
   headerMode:'none',
 })
 
@@ -81,7 +94,7 @@ export const TabNav = tabType({
     }
   },
   Competition: {
-    screen: CompetitionStack,
+    screen: OuterCompetitionStack,
     navigationOptions: {
       tabBarLabel: null,
       tabBarIcon: ({focused}) => (

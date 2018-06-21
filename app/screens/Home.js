@@ -36,6 +36,7 @@ export default class Home extends Component<Props> {
   }
 
   componentWillMount(){
+    console.log(process.env);
     this.setState({data: impData}, ()=> console.log(this.state.data))
   }
 
@@ -89,7 +90,7 @@ export default class Home extends Component<Props> {
           ListHeaderComponent= {<Header
             title='F L A R E'
             navigation={this.props.navigation}
-            leftIcon='blank'
+            leftIcon='ios-search'
             rightIcon='blank'
           />}
         />

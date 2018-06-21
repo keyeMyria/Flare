@@ -18,6 +18,7 @@ import CompetitionItem from '../components/CompetitionItem';
 import {getCompetitionCategories} from '../index/server';
 import {colors} from '../index/colors';
 import {Divider} from 'react-native-elements';
+import {CompetitionCategories} from '../index/data'
 
 const window = Dimensions.get('window');
 type Props = {};
@@ -52,10 +53,11 @@ export default class Competition extends Component<Props> {
   }
 
   componentWillMount(){
-    getCompetitionCategories()
-    .then(res => {
-      this.setState({categories:res}, () => console.log('categories',this.state.categories))
-    })
+    // getCompetitionCategories()
+    // .then(res => {
+    //   this.setState({categories:res}, () => console.log('categories',this.state.categories))
+    // })
+    this.setState({categories:CompetitionCategories})
   }
 
 

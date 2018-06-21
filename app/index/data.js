@@ -16,3 +16,14 @@ export const impData = [
   }
 
 ]
+
+export const CompetitionCategories = [
+  {type:'Memes'},
+  {type:'Nature'},
+  {type:'Art'},
+  {type:'Music'},
+  {type:'Sketches'},
+  {type:'Commercials'},
+  {type:'College'},
+  {type:'Sports}'}
+]

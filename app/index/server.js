@@ -85,7 +85,45 @@ export async function getCompetitionCategories () {
   })
 }
 
+// Create competition
+export async function createCompetition (body) {
+  return fetch("http://localhost:3000/create_competition", {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+  .then(() => {
+    console.log('Upload post successful');
+    return
+  })
+  .catch((error) => {
+    throw(error)
+  })
+}
 
+
+// Fetch active competitions
+export async function getActiveCompetitions (category) {
+  return fetch(`http://localhost:3000/fetch_active_competitions/${category}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+  .then((response) => response.json())
+  .then((responseData) => {
+    console.log('fetch active competitions successful');
+    // Data is len of 0 is null, 1 if existing
+    return responseData
+  })
+  .catch((error) => {
+    throw(error)
+  })
+}
 
 export async function uploadPost (body) {
   return fetch("http://localhost:3000/upload_post", {

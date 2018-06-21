@@ -2,6 +2,12 @@
 #
 .DS_Store
 
+# dependencies
+/node_modules
+
+# misc
+.env
+
 # Xcode
 #
 build/

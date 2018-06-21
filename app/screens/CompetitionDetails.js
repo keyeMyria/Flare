@@ -4,21 +4,30 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from 'react-native';
 import { BGC, tintColor } from '../index/colors';
 import Header from '../components/Header';
 import { isSignedIn } from '../index/auth';
-import * as firebase from 'firebase';
 import {colors} from '../index/colors';
 import {Divider} from 'react-native-elements';
+import {getActiveCompetitions} from '../index/server';
+import ActiveCompetitionCell from '../components/ActiveCompetitionCell';
 
 type Props = {};
 export default class CompetitionDetails extends Component<Props> {
 
-  componentDidMount(){
-    // this.checkedSignedIn()
-    // alert(firebase.auth().currentUser.uid)
+  state = {
+    competitions: null
+  }
+
+
+  componentWillMount(){
+    getActiveCompetitions(this.props.navigation.state.params.competition.type)
+    .then(competitions => {
+      this.setState({competitions}, ()=> console.log('state.competitions',this.state.competitions))
+    })
   }
 
   checkedSignedIn(){
@@ -31,6 +40,19 @@ export default class CompetitionDetails extends Component<Props> {
     this.props.navigation.navigate('PostContent')
   }
 
+  _renderItem = ({item}) => (
+    <ActiveCompetitionCell
+      competition={item}
+    />
+  );
+  renderSeparator(){
+    return(
+      <View
+        style={{height:30}}
+      />
+    )
+  }
+
   render() {
     const {competition} = this.props.navigation.state.params;
 
@@ -38,20 +60,33 @@ export default class CompetitionDetails extends Component<Props> {
       <View style={styles.container}>
         <Header title={competition.type}
           leftIcon='ios-arrow-back'
-          rightIcon='blank'
+          rightIcon='ios-add'
           navigation={this.props.navigation}
           caps={true}
+          type={competition.type}
         />
         <View style={styles.body}>
-          <TouchableOpacity style={styles.postContent} onPress={()=>this.postContentPressed()}>
+          {/* <TouchableOpacity style={styles.postContent} onPress={()=>this.postContentPressed()}>
             <View>
 
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <FlatList
+            data={this.state.competitions}
+            renderItem={this._renderItem}
+            extraData={this.state}
+            keyExtractor={item => item.title}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListHeaderComponent= {
+              <Text>
+                Active Competitions
+              </Text>
+            }
+          />
           <Divider style={styles.divider}/>
           <View style={styles.middleTab}>
             <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
-              H O T   F L A R I N G   C O N T E N T
+              M O S T   R E C E N T   W I N N E R S
             </Text>
             <View style={styles.middleTabIcon}>
             </View>

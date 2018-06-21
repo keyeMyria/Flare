@@ -23,7 +23,7 @@ import {BGC, tintColor} from './app/index/colors';
 
 
 var config = {
-    apiKey: "AIzaSyBJhioVtFvPa9q_A0llcNGEUkZpftHlkmA",
+    apiKey: 'AIzaSyBJhioVtFvPa9q_A0llcNGEUkZpftHlkmA',
     authDomain: "flare-77ed0.firebaseapp.com",
     databaseURL: "https://flare-77ed0.firebaseio.com",
     projectId: "flare-77ed0",

@@ -10,14 +10,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { BGC, tintColor } from '../index/colors';
 import { NavigationActions } from 'react-navigation';
 import FBSDK, {AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-// import firebase from 'react-native-firebase';
+
 
 export default class Header extends Component<Props> {
 
-  createPost(){
-    // this.props.navigation.navigate('Picker')
+  createCompetition(type){
+    this.props.navigation.navigate('CreateCompetition', {type})
   }
 
   goBack(){
@@ -33,23 +31,7 @@ export default class Header extends Component<Props> {
   }
 
   getFriendsList(){
-    var userID = firebase.auth().currentUser.uid
-    console.log('userID', userID);
-    fetch("http://localhost:3000/user_exists/"+userID, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      }
-    })
-    .then((response) => response.json())
-    .then((responseData) => {
-      console.log('respData', responseData);
-      // this.setState({newData: responseData})
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    console.log(process.env)
   }
 
   graphReq(){
@@ -97,6 +79,9 @@ export default class Header extends Component<Props> {
         </Text>
         {this.props.rightIcon == 'blank' && <TouchableOpacity onPress={() => this.doNothing()}>
           <Icon name='menu' size={30} color='transparent'/>
+        </TouchableOpacity>}
+        {this.props.rightIcon == 'ios-add' && <TouchableOpacity onPress={() => this.createCompetition(this.props.type)}>
+          <Icon name='ios-add' size={30} color='white'/>
         </TouchableOpacity>}
         {this.props.rightIcon == 'ios-settings-outline' && <TouchableOpacity onPress={() => this.settingsPressed()}>
           <Icon name={this.props.rightIcon} size={30} color={`${BGC}`}/>
