@@ -24,25 +24,18 @@ export default class CompetitionDetails extends Component<Props> {
 
 
   componentWillMount(){
-    getActiveCompetitions(this.props.navigation.state.params.competition.type)
+    comp = this.props.navigation.state.params.competition
+    getActiveCompetitions(comp.type)
     .then(competitions => {
       this.setState({competitions}, ()=> console.log('state.competitions',this.state.competitions))
     })
   }
 
-  checkedSignedIn(){
-    var res = isSignedIn()
-    console.log('res', res);
-    this.setState({signedIn: res, checkedSignedIn: true})
-  }
-
-  postContentPressed(){
-    this.props.navigation.navigate('PostContent')
-  }
 
   _renderItem = ({item}) => (
     <ActiveCompetitionCell
       competition={item}
+      navigation={this.props.navigation}
     />
   );
   renderSeparator(){

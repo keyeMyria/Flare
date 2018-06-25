@@ -13,11 +13,12 @@ import {
   Keyboard,
   Dimensions,
   NativeModules,
+  ImageBackground
 } from 'react-native';
 const { ImagePickerManager } = NativeModules;
 import {Divider, SocialIcon} from 'react-native-elements';
 import { BGC, tintColor } from '../index/colors';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 // import ImagePicker from 'react-native-image-crop-picker';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob'
@@ -26,6 +27,8 @@ import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import * as firebase from 'firebase';
 import {uploadPost} from '../index/server';
+import {getUid} from '../index/auth';
+import Loading from '../components/Loading';
 
 
 const DismissKeyboard = ({children}) => (
@@ -78,12 +81,16 @@ const uploadImage = (uri, uid, timestamp, mime = 'image/jpg') => {
 type Props = {};
 export default class PostContent extends Component<Props> {
   state = {
+    competition_id: null,
+    uid: null, // uid, display_name,
     loading: false,
+    imageLoading: false,
     imagePath: null,
     imageHeight: null,
     imageWidth: null,
-    title: '',
-    caption: '',
+    title: null,
+    caption: null,
+    type: 'image',
     facebookShare: false,
     photoPermission: 'undetermined',
     // photoURL:'https://images.pexels.com/photos/236047/pexels-photo-236047.jpeg?cs=srgb&dl=landscape-nature-sky-236047.jpg&fm=jpg',
@@ -92,7 +99,11 @@ export default class PostContent extends Component<Props> {
 
 
   componentWillMount(){
-    alert(firebase.auth().currentUser.uid)
+    getUid('uid')
+    .then((uid) => {
+      this.setState({ uid })
+    })
+    this.setState({ competition_id: this.props.navigation.state.params.competition.competition_id }, () => console.log('comp', this.state.competition_id));
   }
 
   // Check the status of a single permission
@@ -115,6 +126,7 @@ export default class PostContent extends Component<Props> {
 
 
   openPicker(){
+    this.setState({imageLoading: true})
     const options = {
       title: 'Upload a Photo',
       customButtons: [
@@ -130,13 +142,17 @@ export default class PostContent extends Component<Props> {
     ImagePicker.showImagePicker(options, (response) => {
       console.log('Response = ', response);
       if (response.didCancel) {
+        this.setState({imageLoading: false})
         console.log('User cancelled image picker');
       } else if (response.error) {
+        this.setState({imageLoading: false})
         console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
+        this.setState({imageLoading: false})
         console.log('User tapped custom button: ', response.customButton);
       } else {
         this.setState({
+          imageLoading: false,
           imagePath: response.uri,
           imageHeight: response.height,
           imageWidth: response.width,
@@ -145,176 +161,54 @@ export default class PostContent extends Component<Props> {
     })
   }
 
-  // openPicker(){
-  //   ImagePicker.openPicker({
-  //     // width: window.width,
-  //     // height: window.width,
-  //     width: window.width,
-  //     height: window.width,
-  //     cropping: true,
-  //     mediaType: 'photo'
-  //   }).then(image => {
-  //     this.setState({image}, ()=> console.log('IMAGESTATE',this.state.image))
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
-  // }
-
-  postImage(){
+  postImage = async () => {
+    await this.resetToHome()
+    return
+    this.setState({loading:true})
     if (!this.state.imagePath) {
       alert("Select a Picture first!")
       return
     }
-    var uid = null
-    uid = firebase.auth().currentUser.uid;
-    console.log('uid',uid);
-    if (!uid) {
-      alert("Log in first")
+
+    if (!this.state.uid) {
+      alert("Trying to load data. Please try again")
       return
     }
-    firestore = firebase.firestore()
-    settings = {timestampsInSnapshots: true};
-    firestore.settings(settings)
     var timestamp = Date.now()
     this.setState({ loading: true })
-    uploadImage(this.state.imagePath, uid, timestamp)
-        .then(url => {
-          var postData = {}
-          postData['imageURL'] = url
-          postData['title'] = this.state.title
-          postData['caption'] = this.state.caption
-          postData['timestamp'] = timestamp
-          postData['likes'] = 0
-          postData['comments'] = []
-          postData['userID'] = uid
-          console.log('postData', postData);
-          // ADD COMPETITION UID
-          // postData['targetID'] = this.props.targetID
-
-          // const usersRef = firestore.collection('users')
-          // const userRef = usersRef.doc(`${uid}`)
-          // const postsRef = userRef.collection('posts')
-          // const timeRef = postsRef.doc(timestamp)
-          firestore.collection('users')
-          .doc(`${uid}`)
-          .collection('posts')
-          .doc(`${timestamp}`)
-          .set(postData)
-          .then(()=> {
-            console.log('success post to db');
-            alert('Success bro')
-          })
-          .catch((error) => {
-            console.log('error posting', error);
-            alert(error)
-          })
-          // this.setState({ uploadURL: url })
-        })
-        .catch(error => {
-          console.log('returning error', error);
-          alert(error.message_)
-        })
+    var url = await uploadImage(this.state.imagePath, this.state.uid, timestamp)
+    var postData = {}
+    postData['post_url'] = url
+    postData['title'] = this.state.title
+    postData['caption'] = this.state.caption
+    postData['date_created'] = timestamp
+    postData['type'] = this.state.type
+    postData['date_updated'] = timestamp
+    postData['competition_id'] = this.state.competition_id
+    postData['uid'] = this.state.uid
+    console.log('postData', postData);
+    try {
+      await uploadPost(postData)
+      this.setState({loading:false});
+      this.resetToHome()
+    } catch (error) {
+      console.log("ERR", error);
+      alert(error)
+      this.setState({loading:false});
+    }
   }
 
-  // postImage(){
-  //   if (!this.state.image) {
-  //     alert("Select a Picture first!")
-  //     return
-  //   }
-  //   var uid = null
-  //   uid = firebase.auth().currentUser.uid;
-  //   console.log('uid',uid);
-  //   if (!uid) {
-  //     alert("Log in first")
-  //     return
-  //   }
-  //
-  //   // TO DO
-  //   if (this.state.facebookShare) {
-  //     // Share to facebook using ShareKit from FBSDK
-  //   }
-  //
-  //   firestore = firebase.firestore()
-  //   settings = {timestampsInSnapshots: true};
-  //   firestore.settings(settings)
-  //
-  //   this.setState({ loading: true })
-  //   const Blob = RNFetchBlob.polyfill.Blob
-  //   const fs = RNFetchBlob.fs
-  //   window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-  //   window.Blob = Blob
-  //
-  //   const metadata = {
-  //     contentType: 'image/jpeg',
-  //   };
-  //
-  //   var imagePath = this.state.image.sourceURL
-  //   imagePath = Platform.OS === 'ios' ? imagePath.replace('file://','') : imagePath
-  //   console.log('imagePath', imagePath);
-  //   let uploadBlob = null
-  //   const imageRef = firebase.storage().ref('images').child(`${uid}`)
-  //   let mime = 'image/jpg'
-  //   fs.readFile(imagePath, 'base64')
-  //     .then((data) => {
-  //       console.log('line 122, data:', data);
-  //       //console.log(data);
-  //       return Blob.build(data, { type: `${mime};BASE64` })
-  //   })
-  //   .then((blob) => {
-  //     console.log('line 126, blob:', blob);
-  //       uploadBlob = blob
-  //       return imageRef.put(blob, { contentType: mime })
-  //     })
-  //     .then(() => {
-  //       alert('Posted')
-  //       console.log('132');
-  //       uploadBlob.close()
-  //       return imageRef.getDownloadURL()
-  //     })
-  //     .then((url) => {
-  //       alert('Success!')
-  //       console.log('line 136, url:', url);
-  //       let postData = {}
-  //       // ADD COMPETITION UID
-  //       postData['imageUri'] = url
-  //       postData['title'] = this.state.title
-  //       postData['caption'] = this.state.caption
-  //       postData['timestamp'] = Date.now()
-  //       firestore.collection('users')
-  //       .doc(`${uid}`)
-  //       .set({
-  //         ['posts']: {
-  //           postData
-  //         }},
-  //         { merge: true }
-  //       )
-  //       .catch((error) => {
-  //         alert(error)
-  //       })
-  //
-  //       firestore.collection('competitions')
-  //       .doc('competitionID1')
-  //       .set({
-  //         ['uniquePostID1']: {
-  //           postData,
-  //           uid: uid
-  //         }},
-  //         { merge: true }
-  //       )
-  //       .then(() => {
-  //         this.setState({loading:false})
-  //       })
-  //       .catch((error) => {
-  //         alert(error)
-  //       })
-  //
-  //     })
-  //     .catch((error) => {
-  //       this.setState({loading:false})
-  //       console.log(error)
-  //     })
-  // }
+  resetToHome(){
+    return this.props
+               .navigation
+               .dispatch(StackActions.popToTop(
+                 {
+                    index: 0,
+                    actions: [
+                      NavigationActions.navigate({ routeName: 'Home'})
+                    ]
+                  }));
+  }
 
   _requestPermission = () => {
     Permissions.request('photo').then(response => {
@@ -342,12 +236,14 @@ export default class PostContent extends Component<Props> {
   }
 
   render() {
+    const {competition} = this.props.navigation.state.params;
     return (
       <DismissKeyboard>
         <View style={styles.container}>
           <Header title="Postin Something Cool? Doubt it..." leftIcon='ios-arrow-back' navigation={this.props.navigation}/>
           <View style={styles.imageHolder}>
-            <TouchableOpacity onPress={this.openPicker.bind(this)}>
+            {this.state.imageLoading && <Loading size={20} color='#34495e'/>}
+            {!this.state.imageLoading && <TouchableOpacity onPress={this.openPicker.bind(this)}>
               {!this.state.imagePath && <View style={styles.defaultPic}>
                 <Icon name='picture' size={35} color='#34495e'/>
               </View>}
@@ -357,7 +253,7 @@ export default class PostContent extends Component<Props> {
                 // resizeMode='cover'
                 resizeMode='contain'
               />}
-            </TouchableOpacity>
+            </TouchableOpacity>}
           </View>
           <View style={styles.captionContainer}>
             <View style={styles.captionHolder}>
@@ -378,7 +274,7 @@ export default class PostContent extends Component<Props> {
                 style={styles.caption}
                 placeholder="C A P T I O N"
                 placeholderTextColor="#34495e"
-                returnKeyType="done"
+                returnKeyType="next"
                 multiline = {true}
                 numberOfLines = {4}
                 maxLength={250}
@@ -415,6 +311,12 @@ export default class PostContent extends Component<Props> {
               </TouchableOpacity>
             </View>
           </View>
+          {this.state.loading &&
+            <ImageBackground source={{}}
+              style={styles.blurOverlay} blurRadius={10}>
+              <Loading size={20} color='red'/>
+            </ImageBackground>
+          }
         </View>
       </DismissKeyboard>
     );
@@ -500,11 +402,6 @@ const styles = StyleSheet.create({
     // paddingTop:10,
     flexDirection: 'row',
     height: 30,
-    // backgroundColor: 'black',
-    // marginTop: 10,
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-    // paddingHorizontal: 20
   },
   cancelBtn: {
     flex:1,
@@ -525,5 +422,18 @@ const styles = StyleSheet.create({
   submit:{
     justifyContent:'center',
     color:'#34495e'
+  },
+  blurOverlay:{
+    position: 'absolute',
+    height:'100%',
+    width:'100%',
+    // left: 0,
+    // right: 0,
+    // top: 0,
+    // bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    resizeMode:'cover',
+    backgroundColor: '#2f364099'
   }
 });

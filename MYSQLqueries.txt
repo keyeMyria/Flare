@@ -6,10 +6,8 @@ CREATE TABLE Users(
   display_name VARCHAR(255),
   email VARCHAR(255) NOT NULL,
   profile_uri VARCHAR(255),
-  profile_uri_480 VARCHAR(255),
   creation_time VARCHAR(20) NOT NULL,
   follower_count int(9) NOT NULL DEFAULT 0,
-  post_count int(6) NOT NULL DEFAULT 0,
   wins int(6) NOT NULL DEFAULT 0,
   fcm_token VARCHAR(255),
   UNIQUE KEY email (email)
@@ -18,7 +16,6 @@ CREATE TABLE Users(
 CREATE TABLE Posts(
   post_id int(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   uid VARCHAR(255) NOT NULL,
-  display_name VARCHAR(255),
   title VARCHAR(255),
   caption VARCHAR(1000),
   type ENUM('image', 'video'),

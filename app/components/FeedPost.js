@@ -14,7 +14,7 @@ import HiddenPanel from './HiddenPanel';
 
 const window = Dimensions.get('window');
 
-export default class Post extends Component<Props> {
+export default class FeedPost extends Component<Props> {
 
   state = {
     width: 0,

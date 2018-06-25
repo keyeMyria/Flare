@@ -34,17 +34,7 @@ export default class Login extends Component {
         var tokenData = await AccessToken.getCurrentAccessToken();
         var token = tokenData.accessToken.toString();
         console.log('token', token);
-        // Graph request to get high quality profile picture
-        var profile_uri_480 = await fetch('https://graph.facebook.com/v2.5/me?fields=id,name,picture.height(480)&access_token=' + token)
-        .then((response) => response.json())
-        .then((json) => {
-          // Friends list should be in json.friends.data of type <array of friends>
-          console.log('json',json);
-          return json.picture.data.url
-        })
-        .catch(() => {
-          reject('ERROR GETTING DATA FROM FACEBOOK')
-        })
+        
         // FB Login
         var credential = firebase.auth.FacebookAuthProvider.credential(token);
         var user = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
@@ -57,7 +47,6 @@ export default class Login extends Component {
           display_name: user.user.displayName,
           email: user.additionalUserInfo.profile.email,
           profile_uri: user.user.photoURL,
-          profile_uri_480: profile_uri_480,
           creation_time: timestamp, // unix time easier to handle/sort
         }
         console.log('body', body);

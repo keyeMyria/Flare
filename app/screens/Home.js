@@ -15,15 +15,9 @@ import { BGC, tintColor } from '../index/colors';
 import {impData} from '../index/data';
 // import { NavigationActions } from 'react-navigation';
 import Header from './../components/Header';
-import Post from './../components/Post';
+import FeedPost from './../components/FeedPost';
 import * as firebase from 'firebase';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
 type Props = {};
 export default class Home extends Component<Props> {
@@ -36,13 +30,11 @@ export default class Home extends Component<Props> {
   }
 
   componentWillMount(){
-    console.log(process.env);
+
     this.setState({data: impData}, ()=> console.log(this.state.data))
   }
 
-  componentDidMount(){
-    // alert(firebase.auth().currentUser.uid)
-  }
+
 
   renderSeparator(){
     return(
@@ -67,7 +59,7 @@ export default class Home extends Component<Props> {
     // res = this.getImageDims(item.image)
     // var width = res.width
     // var height = res.height
-    <Post
+    <FeedPost
       name={item.name}
       time={item.time}
       image={item.image}
@@ -110,16 +102,6 @@ const styles = StyleSheet.create({
   scrollContainer:{
     flex:1,
     // backgroundColor:'black'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#cccccc',
-    marginBottom: 5,
   },
   body: {
     flex:1,

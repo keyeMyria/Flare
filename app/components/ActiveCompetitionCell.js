@@ -21,7 +21,8 @@ export default class ActiveCompetitionCell extends Component {
   }
 
   competitionPressed = (competition) => {
-    alert(competition.competition_id)
+    console.log('passing', competition);
+    this.props.navigation.navigate('PostContent', {competition})
   };
 
   render() {
