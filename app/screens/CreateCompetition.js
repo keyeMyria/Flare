@@ -8,8 +8,10 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
+
+import { BGC, tintColor } from '../index/colors';
 import { SocialIcon } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
+import { SafeAreaView, NavigationActions } from 'react-navigation';
 import CreateCompetitionForm from '../components/CreateCompetitionForm';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -26,7 +28,7 @@ export default class CreateCompetition extends Component {
   }
 
   componentWillMount(){
-    
+
   }
 
   switchNavigators(){
@@ -36,29 +38,35 @@ export default class CreateCompetition extends Component {
   render() {
     const {type} = this.props.navigation.state.params;
     return (
-      <View style={styles.container}>
-        {/* <StatusBar barStyle="light-content"
-        /> */}
-        <View style={styles.logoContainer}>
-          <Text style={styles.title}>
-            Create Competition
-          </Text>
-        </View>
-        {this.state.loading && <ActivityIndicator
-          size='large' color='#f92222'/>}
-        <View style={styles.formContainer}>
-          <CreateCompetitionForm
-            navigation={this.props.navigation}
-            type={type}
-          />
-        </View>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          {/* <StatusBar barStyle="light-content"
+          /> */}
+          <View style={styles.logoContainer}>
+            <Text style={styles.title}>
+              Create Competition
+            </Text>
+          </View>
+          {this.state.loading && <ActivityIndicator
+            size='large' color='#f92222'/>}
+          <View style={styles.formContainer}>
+            <CreateCompetitionForm
+              navigation={this.props.navigation}
+              type={type}
+            />
+          </View>
 
-      </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex:1,
     backgroundColor:'#2c3e50',

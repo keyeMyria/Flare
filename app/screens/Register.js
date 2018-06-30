@@ -8,8 +8,9 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
+import { BGC, tintColor } from '../index/colors';
 import { SocialIcon } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
+import { SafeAreaView, NavigationActions } from 'react-navigation';
 import RegisterForm from '../components/RegisterForm';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -65,35 +66,41 @@ export default class Register extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        {/* <StatusBar barStyle="light-content"
-        /> */}
-        <View style={styles.logoContainer}>
-          <Text style={styles.title}>
-            Register
-          </Text>
-        </View>
-        {this.state.loading && <ActivityIndicator
-          size='large' color='#f92222'/>}
-        <View style={styles.formContainer}>
-          <RegisterForm
-            navigation={this.props.navigation}
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          {/* <StatusBar barStyle="light-content"
+          /> */}
+          <View style={styles.logoContainer}>
+            <Text style={styles.title}>
+              Register
+            </Text>
+          </View>
+          {this.state.loading && <ActivityIndicator
+            size='large' color='#f92222'/>}
+          <View style={styles.formContainer}>
+            <RegisterForm
+              navigation={this.props.navigation}
+            />
+          </View>
+          <SocialIcon
+            title='Continue with Facebook'
+            type='facebook'
+            light
+            button
+            onPress={() => this.fbAuth()}
           />
-        </View>
-        <SocialIcon
-          title='Continue with Facebook'
-          type='facebook'
-          light
-          button
-          onPress={() => this.fbAuth()}
-        />
 
-      </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex:1,
     backgroundColor:'#2c3e50',

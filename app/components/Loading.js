@@ -31,7 +31,7 @@ export default class Loading extends Component<Props> {
   render() {
     const rotate = this.state.spinValue.interpolate({inputRange: [0, 1], outputRange: ['0deg', '360deg']});
     return (
-      <Animated.View style={{transform: [{rotate}], padding: 5}}>
+      <Animated.View style={{transform: [{rotate}], padding: 5, justifyContent:'center', alignItems:'center'}}>
         <Icon name="loading" size={this.props.size} color={this.props.color}/>
       </Animated.View>
     )

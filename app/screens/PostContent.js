@@ -13,12 +13,12 @@ import {
   Keyboard,
   Dimensions,
   NativeModules,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 const { ImagePickerManager } = NativeModules;
 import {Divider, SocialIcon} from 'react-native-elements';
 import { BGC, tintColor } from '../index/colors';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { SafeAreaView, NavigationActions, StackActions } from 'react-navigation';
 // import ImagePicker from 'react-native-image-crop-picker';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob'
@@ -162,8 +162,6 @@ export default class PostContent extends Component<Props> {
   }
 
   postImage = async () => {
-    await this.resetToHome()
-    return
     this.setState({loading:true})
     if (!this.state.imagePath) {
       alert("Select a Picture first!")
@@ -238,92 +236,98 @@ export default class PostContent extends Component<Props> {
   render() {
     const {competition} = this.props.navigation.state.params;
     return (
-      <DismissKeyboard>
-        <View style={styles.container}>
-          <Header title="Postin Something Cool? Doubt it..." leftIcon='ios-arrow-back' navigation={this.props.navigation}/>
-          <View style={styles.imageHolder}>
-            {this.state.imageLoading && <Loading size={20} color='#34495e'/>}
-            {!this.state.imageLoading && <TouchableOpacity onPress={this.openPicker.bind(this)}>
-              {!this.state.imagePath && <View style={styles.defaultPic}>
-                <Icon name='picture' size={35} color='#34495e'/>
-              </View>}
-              {this.state.imagePath && <Image
-                source={{uri: this.state.imagePath}}
-                style={styles.image}
-                // resizeMode='cover'
-                resizeMode='contain'
-              />}
-            </TouchableOpacity>}
-          </View>
-          <View style={styles.captionContainer}>
-            <View style={styles.captionHolder}>
-              <TextInput
-                style={styles.title}
-                placeholder="T I T L E"
-                placeholderTextColor="#34495e"
-                clearButtonMode="while-editing"
-                returnKeyType="next"
-                onSubmitEditing={() => this.title.focus()}
-                onChangeText={(title) => this.setState({title})}
-                value={this.state.title}
-              />
-              <Divider style={styles.divider}/>
-              <TextInput
-                onContentSizeChange={() => {}}
+      <SafeAreaView style={styles.safeArea}>
+        <DismissKeyboard>
+          <View style={styles.container}>
+            <Header title="Postin Something Cool? Doubt it..." leftIcon='ios-arrow-back' navigation={this.props.navigation}/>
+            <View style={styles.imageHolder}>
+              {this.state.imageLoading && <Loading size={20} color='#34495e'/>}
+              {!this.state.imageLoading && <TouchableOpacity onPress={this.openPicker.bind(this)}>
+                {!this.state.imagePath && <View style={styles.defaultPic}>
+                  <Icon name='picture' size={35} color='#34495e'/>
+                </View>}
+                {this.state.imagePath && <Image
+                  source={{uri: this.state.imagePath}}
+                  style={styles.image}
+                  // resizeMode='cover'
+                  resizeMode='contain'
+                />}
+              </TouchableOpacity>}
+            </View>
+            <View style={styles.captionContainer}>
+              <View style={styles.captionHolder}>
+                <TextInput
+                  style={styles.title}
+                  placeholder="T I T L E"
+                  placeholderTextColor="#34495e"
+                  clearButtonMode="while-editing"
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.title.focus()}
+                  onChangeText={(title) => this.setState({title})}
+                  value={this.state.title}
+                />
+                <Divider style={styles.divider}/>
+                <TextInput
+                  onContentSizeChange={() => {}}
 
-                style={styles.caption}
-                placeholder="C A P T I O N"
-                placeholderTextColor="#34495e"
-                returnKeyType="next"
-                multiline = {true}
-                numberOfLines = {4}
-                maxLength={250}
-                ref={(input) => this.title = input}
-                onChangeText={(caption) => this.setState({caption})}
-                value={this.state.caption}
-              />
-            </View>
-            <View style={styles.fbShare}>
-              <Text style={[styles.fbText, this.state.facebookShare && {fontWeight:"800"}]}>
-                S H A R E   O N   F A C E B O O K
-              </Text>
-              <SocialIcon
-                // button
-                light = {!this.state.facebookShare}
-                style={styles.fbButton}
-                onPress={() => this.setState({facebookShare: !this.state.facebookShare})}
-                type='facebook'
-              />
-            </View>
-            <View style={{flex:0.5}}>
+                  style={styles.caption}
+                  placeholder="C A P T I O N"
+                  placeholderTextColor="#34495e"
+                  returnKeyType="next"
+                  multiline = {true}
+                  numberOfLines = {4}
+                  maxLength={250}
+                  ref={(input) => this.title = input}
+                  onChangeText={(caption) => this.setState({caption})}
+                  value={this.state.caption}
+                />
+              </View>
+              <View style={styles.fbShare}>
+                <Text style={[styles.fbText, this.state.facebookShare && {fontWeight:"800"}]}>
+                  S H A R E   O N   F A C E B O O K
+                </Text>
+                <SocialIcon
+                  // button
+                  light = {!this.state.facebookShare}
+                  style={styles.fbButton}
+                  onPress={() => this.setState({facebookShare: !this.state.facebookShare})}
+                  type='facebook'
+                />
+              </View>
+              <View style={{flex:0.5}}>
 
+              </View>
+              <View style={styles.submitContainer}>
+                <TouchableOpacity style={styles.cancelBtn} onPress={()=>this.goBack()}>
+                  <Text style={styles.cancel}>
+                    C A N C E L
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.submitBtn} onPress={()=>this.postImage()}>
+                  <Text style={styles.submit}>
+                    S H A R E
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.submitContainer}>
-              <TouchableOpacity style={styles.cancelBtn} onPress={()=>this.goBack()}>
-                <Text style={styles.cancel}>
-                  C A N C E L
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.submitBtn} onPress={()=>this.postImage()}>
-                <Text style={styles.submit}>
-                  S H A R E
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {this.state.loading &&
+              <View
+                style={styles.blurOverlay}>
+                <Loading size={20} color='red'/>
+              </View>
+            }
           </View>
-          {this.state.loading &&
-            <ImageBackground source={{}}
-              style={styles.blurOverlay} blurRadius={10}>
-              <Loading size={20} color='red'/>
-            </ImageBackground>
-          }
-        </View>
-      </DismissKeyboard>
+        </DismissKeyboard>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex: 1,
     // justifyContent: 'center',
@@ -434,6 +438,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     resizeMode:'cover',
-    backgroundColor: '#2f364099'
+    backgroundColor: 'rgba(0,0,0,.85)'
   }
 });

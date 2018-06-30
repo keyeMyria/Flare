@@ -6,11 +6,12 @@ import {
   View,
   Image,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
+import { BGC, tintColor } from '../index/colors';
 import { SocialIcon, Divider } from 'react-native-elements';
 import FbLoginBtn from '../components/FbLoginBtn';
-import { NavigationActions } from 'react-navigation';
+import { SafeAreaView, NavigationActions } from 'react-navigation';
 import Loginform from '../components/LoginForm';
 import Register from './Register';
 import * as firebase from 'firebase';
@@ -34,7 +35,7 @@ export default class Login extends Component {
         var tokenData = await AccessToken.getCurrentAccessToken();
         var token = tokenData.accessToken.toString();
         console.log('token', token);
-        
+
         // FB Login
         var credential = firebase.auth.FacebookAuthProvider.credential(token);
         var user = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
@@ -94,36 +95,42 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        {/* <StatusBar barStyle="light-content"
-        /> */}
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          {/* <StatusBar barStyle="light-content"
+          /> */}
 
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.logo}
-             />
-          <Text style={styles.title}>
-            boozt
-          </Text>
-        </View>
-        <View style={styles.formContainer}>
-          <Loginform
-            navigation={this.props.navigation}
-          />
-        </View>
-        {!this.state.loading && <TouchableOpacity onPress={() => this.fbAuth()}>
-          <FbLoginBtn loading={false}/>
-        </TouchableOpacity>}
-        {this.state.loading && <TouchableOpacity onPress={() => this.fbAuth()}>
-          <FbLoginBtn loading={true}/>
-        </TouchableOpacity>}
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.logo}
+               />
+            <Text style={styles.title}>
+              boozt
+            </Text>
+          </View>
+          <View style={styles.formContainer}>
+            <Loginform
+              navigation={this.props.navigation}
+            />
+          </View>
+          {!this.state.loading && <TouchableOpacity onPress={() => this.fbAuth()}>
+            <FbLoginBtn loading={false}/>
+          </TouchableOpacity>}
+          {this.state.loading && <TouchableOpacity onPress={() => this.fbAuth()}>
+            <FbLoginBtn loading={true}/>
+          </TouchableOpacity>}
 
-      </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex:1,
     backgroundColor:'#2c3e50',

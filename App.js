@@ -65,18 +65,10 @@ export default class App extends Component<Props> {
 
     const Layout = Root(this.state.signedIn)
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <Layout/>
-      </SafeAreaView>
+      <Layout/>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex:1,
-    backgroundColor:`${tintColor}`
-  }
-});
 
 console.disableYellowBox = true;

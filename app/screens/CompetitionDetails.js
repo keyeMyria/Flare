@@ -5,8 +5,9 @@ import {
   Text,
   View,
   TouchableOpacity,
-  FlatList
+  FlatList,
 } from 'react-native';
+import {SafeAreaView} from 'react-navigation';
 import { BGC, tintColor } from '../index/colors';
 import Header from '../components/Header';
 import { isSignedIn } from '../index/auth';
@@ -50,50 +51,56 @@ export default class CompetitionDetails extends Component<Props> {
     const {competition} = this.props.navigation.state.params;
 
     return (
-      <View style={styles.container}>
-        <Header title={competition.type}
-          leftIcon='ios-arrow-back'
-          rightIcon='ios-add'
-          navigation={this.props.navigation}
-          caps={true}
-          type={competition.type}
-        />
-        <View style={styles.body}>
-          {/* <TouchableOpacity style={styles.postContent} onPress={()=>this.postContentPressed()}>
-            <View>
-
-            </View>
-          </TouchableOpacity> */}
-          <FlatList
-            data={this.state.competitions}
-            renderItem={this._renderItem}
-            extraData={this.state}
-            keyExtractor={item => item.title}
-            ItemSeparatorComponent={this.renderSeparator}
-            ListHeaderComponent= {
-              <Text>
-                Active Competitions
-              </Text>
-            }
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Header title={competition.type}
+            leftIcon='ios-arrow-back'
+            rightIcon='ios-add'
+            navigation={this.props.navigation}
+            caps={true}
+            type={competition.type}
           />
-          <Divider style={styles.divider}/>
-          <View style={styles.middleTab}>
-            <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
-              M O S T   R E C E N T   W I N N E R S
-            </Text>
-            <View style={styles.middleTabIcon}>
-            </View>
-          </View>
-          <View style={styles.detailsContainer}>
+          <View style={styles.body}>
+            {/* <TouchableOpacity style={styles.postContent} onPress={()=>this.postContentPressed()}>
+              <View>
 
+              </View>
+            </TouchableOpacity> */}
+            <FlatList
+              data={this.state.competitions}
+              renderItem={this._renderItem}
+              extraData={this.state}
+              keyExtractor={item => item.title}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListHeaderComponent= {
+                <Text>
+                  Active Competitions
+                </Text>
+              }
+            />
+            <Divider style={styles.divider}/>
+            <View style={styles.middleTab}>
+              <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
+                M O S T   R E C E N T   W I N N E R S
+              </Text>
+              <View style={styles.middleTabIcon}>
+              </View>
+            </View>
+            <View style={styles.detailsContainer}>
+
+            </View>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex: 1,
     // justifyContent: 'center',

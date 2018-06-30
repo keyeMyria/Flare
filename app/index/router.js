@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { BGC, tintColor } from './colors';
 import Home from '../screens/Home';
 import PostContent from '../screens/PostContent';
-import Leaderboard from '../screens/Leaderboard';
 import Competition from '../screens/Competition';
 import CompetitionDetails from '../screens/CompetitionDetails';
 import CreateCompetition from '../screens/CreateCompetition';
@@ -16,7 +15,6 @@ import Profile from '../screens/Profile';
 import Settings from '../screens/Settings';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
-import Logout from '../screens/Logout';
 
 
 export const CompetitionStack = createStackNavigator({
@@ -33,6 +31,7 @@ export const CompetitionStack = createStackNavigator({
 }, {
   // mode:'modal',
   headerMode:'none',
+  cardStyle: { shadowColor: 'transparent' },
 })
 
 export const OuterCompetitionStack = createStackNavigator({
@@ -45,6 +44,7 @@ export const OuterCompetitionStack = createStackNavigator({
 }, {
   mode:'modal',
   headerMode:'none',
+  cardStyle: { shadowColor: 'transparent' },
 })
 
 
@@ -55,6 +55,7 @@ export const HomeStack = createStackNavigator({
 }, {
   mode:'modal',
   headerMode:'none',
+  cardStyle: { shadowColor: 'transparent' },
 })
 
 export const ProfileStack = createStackNavigator({
@@ -67,6 +68,7 @@ export const ProfileStack = createStackNavigator({
 }, {
   // mode:'modal',
   headerMode:'none',
+  cardStyle: { shadowColor: 'transparent' },
 })
 
 const tabType = Platform.OS == 'ios' ? createBottomTabNavigator : createMaterialTopTabNavigator
@@ -139,8 +141,7 @@ export const TabNav = tabType({
   tabBarOptions: {
     showLabel: false,
     activeBackgroundColor:`${BGC}`,
-    inactiveBackgroundColor:`${BGC}`
-
+    inactiveBackgroundColor:`${BGC}`,
   }
 })
 
@@ -154,6 +155,7 @@ export const LoginRegisterStack = createDrawerNavigator({
 }, {
   headerMode: 'none',
   mode:'modal',
+  cardStyle: { shadowColor: 'transparent' },
 });
 
 

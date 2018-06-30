@@ -7,10 +7,9 @@ import {
   ScrollView,
   StatusBar,
   FlatList,
-
 } from 'react-native';
 import {List} from 'react-native-elements';
-
+import {SafeAreaView} from 'react-navigation';
 import { BGC, tintColor } from '../index/colors';
 import {impData} from '../index/data';
 // import { NavigationActions } from 'react-navigation';
@@ -70,29 +69,35 @@ export default class Home extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
-        {/* <Header navigation={this.props.navigation}/> */}
-        {/* <List> */}
-        <FlatList
-          data={this.state.data}
-          extraData={this.state}
-          renderItem={this._renderItem}
-          keyExtractor={item => item.name}
-          ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent= {<Header
-            title='F L A R E'
-            navigation={this.props.navigation}
-            leftIcon='ios-search'
-            rightIcon='blank'
-          />}
-        />
-        {/* </List> */}
-      </View>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          {/* <Header navigation={this.props.navigation}/> */}
+          {/* <List> */}
+          <FlatList
+            data={this.state.data}
+            extraData={this.state}
+            renderItem={this._renderItem}
+            keyExtractor={item => item.name}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListHeaderComponent= {<Header
+              title='F L A R E'
+              navigation={this.props.navigation}
+              leftIcon='ios-search'
+              rightIcon='blank'
+            />}
+          />
+          {/* </List> */}
+        </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex: 1,
     justifyContent:'center',
@@ -106,5 +111,6 @@ const styles = StyleSheet.create({
   body: {
     flex:1,
     justifyContent: 'center',
-  }
+  },
+
 });

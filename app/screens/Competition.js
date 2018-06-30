@@ -7,9 +7,9 @@ import {
   Image,
   Dimensions,
   FlatList,
-  ScrollView
+  ScrollView,
 } from 'react-native';
-
+import {SafeAreaView} from 'react-navigation';
 import * as firebase from 'firebase';
 import { BGC, tintColor } from '../index/colors';
 import resolveAssetSource from 'resolveAssetSource';
@@ -94,53 +94,59 @@ export default class Competition extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container} >
-        <Image
-          style={{width: window.width,
-                    height: window.width * resolveAssetSource(CompetitionBanner).height/resolveAssetSource(CompetitionBanner).width,
-          justifyContent:'center',
-          alignSelf:'center'
-        }}
-          resizeMethod='scale'
-          resizeMode='contain'
-          source={CompetitionBanner}
-        />
-        <Divider style={styles.divider}/>
-        <View style={styles.middleTab}>
-          <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
-            B R O W S E   B Y   C A T E G O R Y
-          </Text>
-          <View style={styles.middleTabIcon}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container} >
+          <Image
+            style={{width: window.width,
+                      height: window.width * resolveAssetSource(CompetitionBanner).height/resolveAssetSource(CompetitionBanner).width,
+            justifyContent:'center',
+            alignSelf:'center'
+          }}
+            resizeMethod='scale'
+            resizeMode='contain'
+            source={CompetitionBanner}
+          />
+          <Divider style={styles.divider}/>
+          <View style={styles.middleTab}>
+            <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
+              B R O W S E   B Y   C A T E G O R Y
+            </Text>
+            <View style={styles.middleTabIcon}>
+            </View>
           </View>
+
+          <ScrollView style={styles.scrollContainer}>
+            <View style={styles.competitionsContainer}>
+              {this.state.categories.map((item) => (
+                <CompetitionItem
+                  competition={item}
+                  type={item.type}
+                  // image={item.image}
+                  navigation={this.props.navigation}
+                  // ratio={0.5} // To customize aspect ratio of picture
+
+                />
+              ))}
+            </View>
+            {/* <FlatList
+              data={this.state.totalList}
+              extraData={this.state}
+              renderItem={this._renderItem}
+              keyExtractor={item => item.name}
+              // ItemSeparatorComponent={this.renderSeparator}
+            /> */}
+          </ScrollView>
         </View>
-
-        <ScrollView style={styles.scrollContainer}>
-          <View style={styles.competitionsContainer}>
-            {this.state.categories.map((item) => (
-              <CompetitionItem
-                competition={item}
-                type={item.type}
-                // image={item.image}
-                navigation={this.props.navigation}
-                // ratio={0.5} // To customize aspect ratio of picture
-
-              />
-            ))}
-          </View>
-          {/* <FlatList
-            data={this.state.totalList}
-            extraData={this.state}
-            renderItem={this._renderItem}
-            keyExtractor={item => item.name}
-            // ItemSeparatorComponent={this.renderSeparator}
-          /> */}
-        </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex: 1,
     // justifyContent: 'flex-start',

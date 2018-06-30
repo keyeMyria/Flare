@@ -4,8 +4,9 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
+import {SafeAreaView} from 'react-navigation';
 import { BGC, tintColor } from '../index/colors';
 import { onSignOut } from '../index/auth';
 import * as firebase from 'firebase';
@@ -37,21 +38,27 @@ export default class Settings extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TouchableOpacity onPress={()=>this.fetchGoogle()} style={styles.fetchBtn}>
-          <Text>
-            Fetch Google MYSQL
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>this.logout()} style={styles.logoutBtn}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={()=>this.fetchGoogle()} style={styles.fetchBtn}>
+            <Text>
+              Fetch Google MYSQL
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.logout()} style={styles.logoutBtn}>
 
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex:1,
+    backgroundColor:`${tintColor}`
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
