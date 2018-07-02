@@ -7,6 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SLIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BGC, tintColor } from '../index/colors';
 import { NavigationActions } from 'react-navigation';
 import FBSDK, {AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
@@ -83,8 +84,8 @@ export default class Header extends Component<Props> {
         {this.props.rightIcon == 'ios-add' && <TouchableOpacity onPress={() => this.createCompetition(this.props.type)}>
           <Icon name='ios-add' size={30} color='white'/>
         </TouchableOpacity>}
-        {this.props.rightIcon == 'ios-settings-outline' && <TouchableOpacity onPress={() => this.settingsPressed()}>
-          <Icon name={this.props.rightIcon} size={30} color={`${BGC}`}/>
+        {this.props.rightIcon == 'settings-outline' && <TouchableOpacity onPress={() => this.settingsPressed()}>
+          <SLIcon name={this.props.rightIcon} size={30} color={`${BGC}`}/>
         </TouchableOpacity>}
         {/* </View> */}
       </View>

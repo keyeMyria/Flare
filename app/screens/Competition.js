@@ -108,7 +108,7 @@ export default class Competition extends Component<Props> {
           />
           <Divider style={styles.divider}/>
           <View style={styles.middleTab}>
-            <Text style={{color:colors.grayDarker, fontWeight:"700"}}>
+            <Text style={{color:colors.grayLight, fontWeight:"700"}}>
               B R O W S E   B Y   C A T E G O R Y
             </Text>
             <View style={styles.middleTabIcon}>

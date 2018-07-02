@@ -7,7 +7,8 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import { BGC, tintColor } from '../index/colors';
-import { SearchBar, Overlay } from 'react-native-elements';
+import { SearchBar, Overlay, Input } from 'react-native-elements';
+import Header from '../components/Header';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -30,18 +31,20 @@ export default class Trending extends Component<Props> {
   render() {
     return (
       <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <SearchBar
-          style={styles.input}
-          clearIcon={this.state.text ? {color: 'gold'} : {color: 'transparent'}}
-          onChangeText={(text) => this.search(text)}
-          value={this.state.text}
-          onClear={(text) => this.search(text)}
-          placeholder='Search for a prompt' />
-        <View style={styles.bodyContainer}>
+        <View style={styles.container}>
+          <Header title='W H A T S   B U M P I N' rightIcon='blank' leftIcon='blank'/>
+          <SearchBar
+            style={styles.input}
+            showLoading
+            clearIcon={this.state.text ? {color: 'gold'} : {color: 'transparent'}}
+            onChangeText={(text) => this.search(text)}
+            value={this.state.text}
+            onClear={(text) => this.search(text)}
+            placeholder='Search for a prompt' />
+          <View style={styles.bodyContainer}>
 
+          </View>
         </View>
-      </View>
       </SafeAreaView>
     );
   }
@@ -72,5 +75,8 @@ const styles = StyleSheet.create({
     color: '#cccccc',
     marginBottom: 5,
   },
+  input:{
+    fontFamily:'Helvetica-Neue',
+  }
 
 });

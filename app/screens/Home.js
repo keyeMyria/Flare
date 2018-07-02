@@ -7,6 +7,7 @@ import {
   ScrollView,
   StatusBar,
   FlatList,
+  RefreshControl
 } from 'react-native';
 import {List} from 'react-native-elements';
 import {SafeAreaView} from 'react-navigation';
@@ -24,13 +25,14 @@ export default class Home extends Component<Props> {
   constructor(props){
     super(props);
     this.state = {
-      data: []
+      data: [],
+      refreshing: false
     }
   }
 
   componentWillMount(){
 
-    this.setState({data: impData}, ()=> console.log(this.state.data))
+    this.refreshFeed()
   }
 
 
@@ -41,6 +43,11 @@ export default class Home extends Component<Props> {
         style={{height:30}}
       />
     )
+  }
+
+  refreshFeed() {
+    this.setState({refreshing: true})
+    this.setState({data: impData, refreshing: false}, ()=> console.log(this.state.data))
   }
 
   // renderHeader(){
@@ -59,9 +66,7 @@ export default class Home extends Component<Props> {
     // var width = res.width
     // var height = res.height
     <FeedPost
-      name={item.name}
-      time={item.time}
-      image={item.image}
+      post={item}
       // ratio={0.5} // To customize aspect ratio of picture
 
     />
@@ -72,19 +77,24 @@ export default class Home extends Component<Props> {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           {/* <Header navigation={this.props.navigation}/> */}
+          <Header
+            title='F L A R E'
+            navigation={this.props.navigation}
+            leftIcon='ios-search'
+            rightIcon='blank'
+          />
           {/* <List> */}
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => this.refreshFeed()}
+              />}
             data={this.state.data}
             extraData={this.state}
             renderItem={this._renderItem}
             keyExtractor={item => item.name}
             ItemSeparatorComponent={this.renderSeparator}
-            ListHeaderComponent= {<Header
-              title='F L A R E'
-              navigation={this.props.navigation}
-              leftIcon='ios-search'
-              rightIcon='blank'
-            />}
           />
           {/* </List> */}
         </View>

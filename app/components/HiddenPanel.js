@@ -6,22 +6,29 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Entypo';
 import { BGC, tintColor } from '../index/colors';
 
 
 
 export default class HiddenPanel extends Component<Props> {
   render() {
+
+
+
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.dislike}>
-          {/* <Icon name='thumbs-down' size={30} color='red'/> */}
-          <Text style={{color:'blue'}}> NOT </Text>
+        <TouchableOpacity style={styles.dislike} onPress={() => this.props.vote('dislike')}>
+          <Icon name='chevron-down' size={30} color='red'/>
+          {/* <Text style={{color:'blue'}}> NOT </Text> */}
         </TouchableOpacity>
-        <TouchableOpacity style={styles.like}>
-          {/* <Icon name='thumbs-up' size={30} color='#2ecc71'/> */}
-          <Text style={{color:'red'}}> HOT </Text>
+        <TouchableOpacity style={styles.share} onPress={() => this.props.vote('share')}>
+          <Icon name='share' size={30} color='lightblue'/>
+          {/* <Text style={{color:'red'}}> HOT </Text> */}
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.like} onPress={() => this.props.vote('like')}>
+          <Icon name='chevron-up' size={30} color='#2ecc71'/>
+          {/* <Text style={{color:'red'}}> HOT </Text> */}
         </TouchableOpacity>
       </View>
     );
@@ -41,15 +48,23 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottomWidth: 2,
-    borderColor: 'blue'
+    borderBottomWidth: 1,
+    borderColor: 'red'
     // backgroundColor:'blue'
+  },
+  share: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'lightblue'
   },
   like: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottomWidth: 2,
-    borderColor: 'red'
+    // backgroundColor:'blue'
+    borderBottomWidth: 1,
+    borderColor: '#2ecc71'
   }
 });

@@ -16,7 +16,7 @@ import {
 import {SafeAreaView} from 'react-navigation';
 import {Divider} from 'react-native-elements';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
-import MIcon from 'react-native-vector-icons/MaterialIcons';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import EIcon from 'react-native-vector-icons/Entypo';
 import { BGC, tintColor, colors } from '../index/colors';
 import { onSignOut, getUid } from '../index/auth';
@@ -66,6 +66,11 @@ export default class Profile extends Component<Props> {
       console.log(error);
     })
 
+  }
+
+  settingsPressed(){
+    this.props.navigation.navigate('Settings');
+    alert('hey')
   }
 
   onProfilePicLoad = () => {
@@ -124,15 +129,15 @@ export default class Profile extends Component<Props> {
     })
   }
 
-  refreshPosts() {
-    getUid('uid')
-    .then(uid => {
-      this.getUserPhotos(uid)
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+  // refreshPosts() {
+  //   getUid('uid')
+  //   .then(uid => {
+  //     this.getUserPhotos(uid)
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
+  //   })
+  // }
 
   sortPressed(index){
     // Update state
@@ -158,7 +163,8 @@ export default class Profile extends Component<Props> {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
-          <Header title="M Y   P R O F I L E" rightIcon='ios-settings-outline' leftIcon='blank' navigation={this.props.navigation}/>
+          <Header title="M Y   P R O F I L E" rightIcon='settings-outline' leftIcon='blank' navigation={this.props.navigation}/>
+
           <ScrollView
             refreshControl={
               <RefreshControl
@@ -351,12 +357,12 @@ const styles = StyleSheet.create({
     flex:1
   },
   dataCellText:{
-    color:'gray',
+    color: colors.grayLight,
     fontSize:10,
     alignSelf:'center',
   },
   dataCellNumber:{
-    // color:'gray',
+    color: colors.grayDark,
     fontWeight:"700"
   },
   scrollContainer:{
@@ -386,5 +392,12 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     paddingHorizontal: 10,
     // backgroundColor:'red'
+  },
+  settingsIcon:{
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    padding:10,
+    backgroundColor:'green'
+    // marginTop: -5,
   }
 });

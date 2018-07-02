@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width/3,
     height: Dimensions.get('window').width/3,
     // backgroundColor:'#95a5a6',
-    borderColor:'grey',
+    borderColor: colors.grayLight,
     borderWidth:0.5,
     borderRadius:5,
 
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     // backgroundColor:'red'
   },
   name:{
-    color:colors.grayDark,
+    color:colors.grayLight,
     // backgroundColor:'red',
     // justifyContent:'center',
     // alignSelf:'center',
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
   image: {
     height:30,
     width:30,
-    // tintColor:'red'
+    tintColor: colors.grayDark
   }
 })
